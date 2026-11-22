@@ -2,14 +2,18 @@
   {
     "id": "YEM-001",
     "category": "جغرافيا",
+    "topic": "جغرافيا اليمن",
     "fact": "تقع اليمن في جنوب غرب شبه الجزيرة العربية.",
+    "source": "بعثة الجمهورية اليمنية لدى الأمم المتحدة",
     "source_url": "https://www.un.int/yemen/about",
     "status": "source_attached_needs_fact_review"
   },
   {
     "id": "YEM-002",
     "category": "تاريخ",
+    "topic": "تاريخ سبأ",
     "fact": "كانت سبأ مملكة قديمة في جنوب الجزيرة العربية.",
+    "source": "UNESCO World Heritage Centre",
     "source_url": "https://whc.unesco.org/en/list/1700/",
     "status": "source_attached_needs_fact_review"
   }

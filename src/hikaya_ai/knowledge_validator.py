@@ -5,7 +5,6 @@ from pathlib import Path
 def validate_knowledge(path):
     path = Path(path)
     records = json.loads(path.read_text(encoding="utf-8"))
-
     results = []
 
     for item in records:
