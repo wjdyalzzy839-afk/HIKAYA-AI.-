@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
@@ -6,10 +8,12 @@ from .model import HikayaAI, HikayaConfig
 from .tokenizer import HikayaTokenizer
 
 
+ROOT = Path(__file__).resolve().parents[2]
+
+
 class HikayaDataset(Dataset):
     def __init__(self, texts, tokenizer, seq_len=64):
         self.samples = []
-        self.seq_len = seq_len
 
         for text in texts:
             ids = tokenizer.encode(text)
@@ -33,17 +37,31 @@ class HikayaDataset(Dataset):
         )
 
 
-def train_model(texts, epochs=5, batch_size=4):
+def train_model(epochs=10, batch_size=4):
+    data_path = ROOT / "data" / "training.txt"
+
+    if not data_path.exists():
+        raise FileNotFoundError("ملف بيانات التدريب غير موجود.")
+
+    texts = [
+        line.strip()
+        for line in data_path.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+
     tokenizer = HikayaTokenizer()
     tokenizer.fit(texts)
 
+    config = type(
+        "Config",
+        (HikayaConfig,),
+        {"vocab_size": max(4, len(tokenizer.token_to_id))}
+    )
+
     dataset = HikayaDataset(texts, tokenizer)
 
-    if not len(dataset):
-        raise ValueError("لا توجد نصوص كافية للتدريب.")
-
-    config = HikayaConfig
-    config.vocab_size = max(4, len(tokenizer.token_to_id))
+    if len(dataset) == 0:
+        raise ValueError("بيانات التدريب غير كافية.")
 
     loader = DataLoader(
         dataset,
@@ -58,7 +76,6 @@ def train_model(texts, epochs=5, batch_size=4):
     )
 
     criterion = nn.CrossEntropyLoss(ignore_index=0)
-
     model.train()
 
     for epoch in range(epochs):
@@ -66,6 +83,7 @@ def train_model(texts, epochs=5, batch_size=4):
 
         for inputs, targets in loader:
             optimizer.zero_grad()
+
             outputs = model(inputs)
 
             loss = criterion(
@@ -75,6 +93,7 @@ def train_model(texts, epochs=5, batch_size=4):
 
             loss.backward()
             optimizer.step()
+
             total_loss += loss.item()
 
         print(
@@ -82,17 +101,14 @@ def train_model(texts, epochs=5, batch_size=4):
             f"- Loss: {total_loss / len(loader):.4f}"
         )
 
-    torch.save(model.state_dict(), "hikaya_model.pt")
-    tokenizer.save("data/tokenizer.json")
+    model_path = ROOT / "hikaya_model.pt"
+    tokenizer_path = ROOT / "data" / "tokenizer.json"
 
-    print("اكتمل التدريب التجريبي.")
+    torch.save(model.state_dict(), model_path)
+    tokenizer.save(tokenizer_path)
+
+    print("اكتملت دورة التدريب التجريبية.")
 
 
 if __name__ == "__main__":
-    sample_texts = [
-        "التاريخ سجل أحداث الشعوب.",
-        "تقع اليمن في جنوب غرب شبه الجزيرة العربية.",
-        "الحضارات القديمة جزء مهم من تاريخ البشرية."
-    ]
-
-    train_model(sample_texts)
+    train_model()
