@@ -14,9 +14,14 @@ __all__ = [
     "KnowledgeQA",
     "AnswerEvaluator",
     "HikayaMemory",
-    "KnowledgeManager"
+    "KnowledgeManager",
+    "validate_source_record",
+    "validate_source_file",
+    "source_quality_report"
 ]
 
 from .memory_store import HikayaMemory
 
 from .knowledge_manager import KnowledgeManager
+
+from .source_quality import validate_source_record, validate_source_file, source_quality_report
