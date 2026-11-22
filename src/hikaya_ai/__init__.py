@@ -13,7 +13,10 @@ __all__ = [
     "KnowledgeSearch",
     "KnowledgeQA",
     "AnswerEvaluator",
-    "HikayaMemory"
+    "HikayaMemory",
+    "KnowledgeManager"
 ]
 
 from .memory_store import HikayaMemory
+
+from .knowledge_manager import KnowledgeManager

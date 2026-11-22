@@ -6,7 +6,10 @@
     "fact": "تقع اليمن في جنوب غرب شبه الجزيرة العربية.",
     "source": "بعثة الجمهورية اليمنية لدى الأمم المتحدة",
     "source_url": "https://www.un.int/yemen/about",
-    "status": "source_attached_needs_fact_review"
+    "status": "needs_review",
+    "reviewed_by": "HIKAYA Review",
+    "review_note": "إحالة المعلومة إلى مراجعة المصدر وصحة النص.",
+    "reviewed_at": "2026-11-22T06:29:09.027468+00:00"
   },
   {
     "id": "YEM-002",
