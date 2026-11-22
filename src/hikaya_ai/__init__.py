@@ -12,5 +12,8 @@ __all__ = [
     "HikayaTokenizer",
     "KnowledgeSearch",
     "KnowledgeQA",
-    "AnswerEvaluator"
+    "AnswerEvaluator",
+    "HikayaMemory"
 ]
+
+from .memory_store import HikayaMemory
